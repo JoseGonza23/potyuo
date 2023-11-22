@@ -1,0 +1,92 @@
+<ion-header class="pop" [translucent]="false">
+  <ion-toolbar class="pop" >
+    <ion-item id="header" class="pop">
+      <h3> IUMACO </h3> 
+      <div id="logo"><img src="../../assets/sena.png" class="logo"></div>
+      <div class="custom-button" slot="end">
+        <ion-button fill="clear"  class="botonsesion"  (click)="volver()">Página principal</ion-button>
+        <ion-button fill="clear" class="botonsesion"   (click)="confirmarSalida()">Cerrar sesión</ion-button>
+      </div>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="centered-container">
+  <div class="center">
+    <h2>Formulario de Felicitación</h2>
+  </div>
+  <div id="formulario">
+    
+    <ion-row>
+
+      <ion-col size="4">
+        <ion-card class="uno" (click)="llamadoAtencion()" >
+          <ion-icon name="thumbs-down-outline" id="icon2"></ion-icon>
+          <h4>Llamado de Atencion </h4>        
+        </ion-card>
+        <ion-card class="uno"(click)="cambiarEstadoF()" *ngIf="historialFelicitar !== true">
+          <ion-icon name="newspaper-outline"></ion-icon>
+          <h4>Historial </h4>
+        </ion-card>
+        <ion-card class="uno"(click)="cambiarEstadoF()" *ngIf="historialFelicitar === true">
+          <ion-icon  name="ribbon-outline" id="icon1"></ion-icon>
+          <h4>Felicitación</h4>
+        </ion-card>
+        <ion-card class="uno" (click)="citacionComite()">
+          <ion-icon name="reader-outline" id="icon3"></ion-icon>
+          <h4>Solicitud para comite</h4>
+        </ion-card>
+      </ion-col>
+      
+      <ion-col size="8">
+        <div id="formularioFelicitar">
+
+          <div *ngIf="historialFelicitar === true" class="cuadro">
+            <ion-card  *ngFor="let F of gHistorialFelicitar" >
+              <ion-item>
+                
+                <P slot="start">Id del aprendiz:{{F.aprendizFK}}</P>
+                <P slot="end">Fecha: {{F.fecha}}</P>
+              </ion-item>
+              <ion-button (click)="cambiarDetalleF()">Detalle</ion-button>
+              <div *ngIf="detalle === true">
+                <ion-item lines="none">
+                  Nota: {{F.nota}}
+                </ion-item>
+              </div>
+            </ion-card>
+          </div>
+      
+          <form method="POST" *ngIf="historialFelicitar !== true">
+    
+            <ion-item class="cuadro">
+              <ion-label for="fichas">Fichas:</ion-label>
+              <ion-select [(ngModel)]="fichaSeleccionada" name="fichaSeleccionada" (ionChange)="filtrarDestinatarios()">
+                <ion-select-option *ngFor="let ficha of fichasUnicas" [value]="ficha">{{ ficha }}</ion-select-option>
+              </ion-select>
+            </ion-item><br>
+            
+            <ion-item class="cuadro">
+              <ion-label for="destinatario">Aprendices como destinatario:</ion-label>
+              <ion-select id="destinatario" [(ngModel)]="destinatario" name="destinatario" multiple="false" (ionChange)="informacionAprendiz()">
+                <ion-select-option *ngFor="let destinatario of destinatarios" [value]="destinatario.email">{{ destinatario }}</ion-select-option>
+              </ion-select>
+            </ion-item><br>
+    
+            <ion-item class="cuadro">
+              <ion-label position="floating">Nota:</ion-label>
+              <ion-textarea [(ngModel)]="nota" id="nota" name="nota" rows="4" cols="30"></ion-textarea>
+            </ion-item><br><br>        
+    
+            <input type="submit" value="Enviar" (click)="enviarCorreo()">
+          </form>
+          
+        </div>
+      </ion-col>
+
+      
+    </ion-row>
+  </div>
+
+  <img class="este" src="../../assets/icon/Captura-fondo-sena.png">
+</ion-content>
